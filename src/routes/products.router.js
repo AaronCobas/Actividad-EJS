@@ -1,6 +1,7 @@
 import { Router} from "express";
 import productsManager from "../Managers/productManager.js"
 import uploader from "../services/upload.js";
+import { Server } from "socket.io";
 const router = Router()
 const productsService = new productsManager();
 router.post("/",uploader.single("thumbnail"),async (req,res)=>{

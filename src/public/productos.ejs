@@ -10,22 +10,17 @@
 <% if (productosArray.length === 0) { %>
 <h1>No hay productos para mostrar</h1>
 <% }else{ %>
-    <table style=" border:1px solid black;">
+    <table style=" border:1px solid black;" id="productTable">
         <tr>
         <th style=" border:1px solid black;">Título</th>
         <th style=" border:1px solid black;">Precio</th>
         <th style=" border:1px solid black;">Imágen</th>
         </tr>
-    <% productosArray.forEach(producto => { %>
-        <tr>
-            <td style=" border:1px solid black;"><%= producto.title %></td>
-            <td style=" border:1px solid black;"><%= producto.price %> </p></td>
-            <td style=" border:1px solid black;"><img style="display:block;" width="150px" height="150px" src=<%= producto.thumbnail  %>  alt=""></td>
-            </tr>
-    <% }) %>
 </table>
 <% } %> 
 <a href="http://localhost:8080"><button>Agregar productos</button>
 </a>
 </body>
+<script src="/socket.io/socket.io.js"></script>
+<script src="./js/productos.js"></script>
 </html>

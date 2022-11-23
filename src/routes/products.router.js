@@ -1,19 +1,21 @@
-import { Router} from "express";
+import { json, Router} from "express";
 import productsManager from "../Managers/productManager.js"
 import uploader from "../services/upload.js";
 import { Server } from "socket.io";
+import containerSQL from "../Container/containerSQL.js";
+import sqliteOptions from "../dbs/knex.js";
 const router = Router()
+const productSQL = new containerSQL(sqliteOptions, "products")
 const productsService = new productsManager();
 router.post("/",uploader.single("thumbnail"),async (req,res)=>{
-    const thumbnail = req.protocol+"://"+req.hostname+":8080/thumbnail/"+req.file.filename
     let product = req.body;
-    product.thumbnail = thumbnail;
     product.price = parseInt(product.price);
-    const result = await productsService.save(product);
-    res.send({status:"success", message:"Product added"});
+    const parsedProduct = JSON.parse(JSON.stringify(product))
+    const result = await productSQL.addProduct(parsedProduct);
+    res.send({status:"success", message:result});
 })
 router.get("/",async(req,res)=>{
-    let result = await productsService.getAll()
+    let result = await productSQL.getAll();
     res.send(result)
 })
 router.get("/:id",async(req,res)=>{
